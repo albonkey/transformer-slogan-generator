@@ -7,5 +7,5 @@ def DotProductAttention(query, key, value, mask=None):
   pass
 
 # Implement Causal Attention
-def CausalAttention(dimensionOfFeature, numberOfHeads, mode='train'):
+def CausalAttention(feature_dimension, nr_heads, mode='train'):
   pass
