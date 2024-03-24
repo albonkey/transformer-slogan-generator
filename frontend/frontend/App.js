@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './Home/Login';
-import SignUpScreen from './Home/Signup'; // Assume this is another component you created
+import SignUpScreen from './Home/Signup'; 
 //import ForgotPasswordScreen from './ForgotPasswordScreen'; // Assume this is another component you created
 
 const Stack = createStackNavigator();
