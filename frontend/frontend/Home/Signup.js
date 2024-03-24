@@ -53,7 +53,7 @@ const SignUpScreen = ({ navigation }) => {
             <View 
             style={{
                 alignItems:'center',
-                marginTop:10
+                marginTop:40
             }}>
 
                 <Image 

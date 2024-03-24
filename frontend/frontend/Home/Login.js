@@ -14,11 +14,12 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
 
-      <Text style={styles.title}>Login</Text>
+      
       <View
           style={{
             alignItems: 'center',
-            margin:20
+            margin:80,
+            
             
           }}>
         <Image
@@ -115,7 +116,7 @@ const LoginScreen = ({ navigation }) => {
               
             /></View>
       <Button
-        title="Sign Up"
+        title="Create an account"
         onPress={() => navigation.navigate('SignUp')}
       />
       <Button
@@ -129,16 +130,12 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     justifyContent: 'center',
+
  
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-    
-    textAlign: 'center',
-  },
+
   input: {
     marginBottom: 10,
     paddingHorizontal: 15,
