@@ -30,7 +30,7 @@ const SignUpScreen = ({ navigation }) => {
     // navigation.navigate('Login');
   };
   function isEnableSignUp(){
-    return email != '' && username != '' && password != '' && emailError == '' &&
+    return email != '' && name != '' && password != '' && emailError == '' &&
     passwordError == '' && usernameError == ''
 }
   return (
