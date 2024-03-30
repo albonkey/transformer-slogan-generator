@@ -22,11 +22,14 @@ const LoginScreen = ({ navigation }) => {
     try {
       const userCredentials = await signInWithEmailAndPassword(auth, email, password);
       const authUser = userCredentials.user;
+      
+      navigation.navigate('Home')
  
-    } catch (error) {
+    }  catch (error) {
       console.error("Error during login: ", error);
       alert(error.message);
     }
+
   }
   return (
     <SafeAreaView style={styles.container}>
