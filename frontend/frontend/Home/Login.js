@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet, SafeAreaView, Image, Touchab
 import utils from '../api/utils';
 import FormInput from '../components/FormInput'
 import { PrimaryButton } from '../components/Button';
+import { auth } from '../database/database';
 
 const LoginScreen = ({ navigation }) => {
     const [emailError, setEmailError] = React.useState('')
@@ -10,15 +11,35 @@ const LoginScreen = ({ navigation }) => {
     const [password, setPassword] = React.useState('')
     const [showPass, setShowPass] = React.useState(false)
 
+    React.useEffect({
+
+
+    })
+
     function isEnableSignIn() { return email != '' && password != '' && emailError == '' }
+
+  const handleLogin = async () => {
+    try {
+      const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+      const authUser = userCredentials.user;
+      
+      navigation.navigate('Home')
+ 
+    }  catch (error) {
+      console.error("Error during login: ", error);
+      alert(error.message);
+    }
+
+  }
   return (
     <SafeAreaView style={styles.container}>
 
-      <Text style={styles.title}>Login</Text>
+      
       <View
           style={{
             alignItems: 'center',
-            margin:20
+            margin:80,
+            
             
           }}>
         <Image
@@ -110,12 +131,12 @@ const LoginScreen = ({ navigation }) => {
 
               disabled={isEnableSignIn() ? false : true}
               //check with firebase
-              onPress={() => console.log('Login')} 
+              onPress={handleLogin} 
                 
               
             /></View>
       <Button
-        title="Sign Up"
+        title="Create an account"
         onPress={() => navigation.navigate('SignUp')}
       />
       <Button
@@ -129,16 +150,12 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     justifyContent: 'center',
+
  
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-    
-    textAlign: 'center',
-  },
+
   input: {
     marginBottom: 10,
     paddingHorizontal: 15,
