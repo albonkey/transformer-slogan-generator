@@ -4,6 +4,7 @@ import utils from '../api/utils';
 import FormInput from '../components/FormInput'
 import { PrimaryButton } from '../components/Button';
 import { auth } from '../database/database';
+import signInWithEmailAndPassword from 'firebase/compat';
 
 const LoginScreen = ({ navigation }) => {
     const [emailError, setEmailError] = React.useState('')
@@ -11,10 +12,7 @@ const LoginScreen = ({ navigation }) => {
     const [password, setPassword] = React.useState('')
     const [showPass, setShowPass] = React.useState(false)
 
-    React.useEffect({
 
-
-    })
 
     function isEnableSignIn() { return email != '' && password != '' && emailError == '' }
 

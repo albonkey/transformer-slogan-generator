@@ -4,6 +4,7 @@ import utils from '../api/utils';
 import { PrimaryButton, SecondButton } from '../components/Button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import FormInput from '../components/FormInput';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
 const SignUpScreen = ({ navigation }) => {
@@ -21,7 +22,20 @@ const SignUpScreen = ({ navigation }) => {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
+    const auth = getAuth();
+      createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+    // Signed up 
+      const user = userCredential.user;
+    // ...
+     })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
 
+    
     console.log('Sign Up logic goes here');
     // Here you would typically handle the user registration logic,
     // such as sending the user details to your backend server
