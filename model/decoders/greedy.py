@@ -1,8 +1,8 @@
 import numpy as np
 from helpers import tokenize, detokenize, measure_time
 
-def decode_greedy():
-  """Decode function.
+def decode_greedy(input_sentence, model, tokenize=tokenize, detokenize=detokenize, vocab_dir='model/vocab_dir', verbose=False):
+    """Decode function.
 
     Args:
         input_sentence (string): a sentence or article.
@@ -21,11 +21,8 @@ def decode_greedy():
     while cur_output != EOS:
         # Get next symbol
         cur_output = None 
-        if (method == 'greedy'):
-            cur_output = next_symbol_greedy(cur_output_tokens, model)
-
-        elif(method == 'sampling'):
-            cur_output = next_symbol_sampling(cur_output_tokens, model)
+        
+        cur_output = next_symbol_greedy(cur_output_tokens, model)
 
         # Append next symbol to original sentence
         cur_output_tokens.append(cur_output)
@@ -38,7 +35,7 @@ def decode_greedy():
         
     return detokenize(generated_output, vocab_dir=vocab_dir)
 
-def next_symbol_greedy():
+def next_symbol_greedy(cur_output_tokens, model):
   """Returns the next symbol for a given sentence.
 
   Args:

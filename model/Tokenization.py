@@ -1,5 +1,5 @@
 import pandas as pd
-from transformers import GPT2Tokenizer, GPT2LMHeadModel
+from transformers import GPT2Tokenizer
 from sklearn.model_selection import train_test_split
 
 # Define the model name
@@ -13,7 +13,6 @@ slogan_token = "<slogan>"
 
 # Initialize the tokenizer and model
 tokenizer = GPT2Tokenizer.from_pretrained(model_name, pad_token=pad_token)
-model = GPT2LMHeadModel.from_pretrained(model_name)
 
 # Add these special tokens to the vocabulary and resize model's embeddings:
 special_tokens_dict = {
@@ -21,10 +20,9 @@ special_tokens_dict = {
     'additional_special_tokens': [company_token, description_token, slogan_token]
 }
 tokenizer.add_special_tokens(special_tokens_dict)
-model.resize_token_embeddings(len(tokenizer))
 
 # Specify the CSV file path
-csv_file_path = 'C://Users//ssisodi3//OneDrive - Cal State LA/Desktop//pro//kaggle_valid_cleansed.csv'
+csv_file_path = './data/kaggle_valid_cleansed.csv'
 
 # Read the CSV file
 data = pd.read_csv(csv_file_path, encoding='ISO-8859-1')

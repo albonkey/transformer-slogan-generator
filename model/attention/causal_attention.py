@@ -1,6 +1,7 @@
-import trax
 from trax import layers as tl
 from trax.fastmath import numpy as jnp
+
+from attention.dot_product_attention import DotProductAttention
 
 def CausalAttention(d_feature, n_heads, mode='train'):
     """Transformer-style multi-headed causal attention.
