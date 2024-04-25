@@ -1,7 +1,8 @@
+from Tokenization.Tokenization import tokenize_text
 import numpy as np
 from helpers import tokenize, detokenize, measure_time
 
-def decode_greedy(input_sentence, model, tokenize=tokenize, detokenize=detokenize, vocab_dir='model/vocab_dir', verbose=False):
+def decode_greedy(input_sentence, model, tokenize=tokenize, detokenize=detokenize, verbose=True):
     """Decode function.
 
     Args:
@@ -13,10 +14,11 @@ def decode_greedy(input_sentence, model, tokenize=tokenize, detokenize=detokeniz
     """
     
     # Use tokenize()
-    cur_output_tokens = tokenize(input_sentence) + [0]    
+    cur_output_tokens = tokenize(input_sentence) + [50257]  
+    print(cur_output_tokens) 
     generated_output = [] 
     cur_output = 0 
-    EOS = 1 
+    EOS = 50260
     
     while cur_output != EOS:
         # Get next symbol
@@ -30,10 +32,11 @@ def decode_greedy(input_sentence, model, tokenize=tokenize, detokenize=detokeniz
         generated_output.append(cur_output)
         
         if verbose:
-            print(detokenize(generated_output, vocab_dir=vocab_dir))
+            print(generated_output)
+            print(detokenize(generated_output))
     
         
-    return detokenize(generated_output, vocab_dir=vocab_dir)
+    return detokenize(generated_output)
 
 def next_symbol_greedy(cur_output_tokens, model):
   """Returns the next symbol for a given sentence.

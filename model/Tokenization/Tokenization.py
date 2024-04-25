@@ -1,4 +1,5 @@
 import pandas as pd
+import csv
 from transformers import GPT2Tokenizer
 from sklearn.model_selection import train_test_split
 
@@ -22,13 +23,17 @@ special_tokens_dict = {
 tokenizer.add_special_tokens(special_tokens_dict)
 
 # Specify the CSV file path
-csv_file_path = 'C://Users//ssisodi3//OneDrive - Cal State LA/Desktop//pro//kaggle_valid_cleansed.csv'
+csv_file_path = 'model/data/kaggle_valid_cleansed.csv'
 
 # Read the CSV file
-data = pd.read_csv(csv_file_path, encoding='ISO-8859-1')
+data = pd.read_csv(csv_file_path)
 
 # Split the data into training and testing sets
 train_data, test_data = train_test_split(data, test_size=0.2, random_state=42)
+
+def tokenize_text(text):
+    """Tokenize a text."""
+    return tokenizer.tokenize(text, add_prefix_space=True)
 
 def convert_tokens_to_ids(tokens):
     """Convert a list of tokens to their corresponding IDs."""
@@ -41,6 +46,10 @@ def decode_and_skip_special_tokens(token_ids):
 # Function to process a chunk of data and save to a file
 def process_and_save_chunk(chunk, file_path):
     with open(file_path, 'w', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        field = ['company', 'description', 'slogan']
+        writer.writerow(field)
+
         for index, row in chunk.iterrows():
             # Convert the texts to strings to ensure compatibility with tokenizer
             company_text = str(row['company'])
@@ -52,27 +61,11 @@ def process_and_save_chunk(chunk, file_path):
             description_tokens = tokenizer.tokenize(description_text, add_prefix_space=True)
             slogan_tokens = tokenizer.tokenize(slogan_text, add_prefix_space=True)
 
-            # Convert tokens to IDs
-            company_token_ids = convert_tokens_to_ids(company_tokens)
-            description_token_ids = convert_tokens_to_ids(description_tokens)
-            slogan_token_ids = convert_tokens_to_ids(slogan_tokens)
-
-            # Detokenize the IDs, skipping special tokens in the output
-            company_detoken = decode_and_skip_special_tokens(company_token_ids)
-            description_detoken = decode_and_skip_special_tokens(description_token_ids)
-            slogan_detoken = decode_and_skip_special_tokens(slogan_token_ids)
-
-            # Combine tokens with special tokens for clarity
-            tokenized_output = [company_token] + company_tokens + \
-                               [description_token] + description_tokens + \
-                               [slogan_token] + slogan_tokens
-
-            # Format and write the output to the file
-            file.write(f" {' '.join(tokenized_output)}\n")
+            writer.writerow([' '.join(company_tokens), ' '.join(description_tokens), ' '.join(slogan_tokens)])
 
 # Process and save the training and testing data
 print("Processing and saving training data...")
-process_and_save_chunk(train_data, 'train_data_tokens.txt')
+process_and_save_chunk(train_data, 'model/data/train_data_tokens.csv')
 
 print("Processing and saving testing data...")
-process_and_save_chunk(test_data, 'test_data_tokens.txt')
+process_and_save_chunk(test_data, 'model/data/test_data_tokens.csv')

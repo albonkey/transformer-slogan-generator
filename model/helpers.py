@@ -1,10 +1,5 @@
-import trax
-from trax import layers as tl
 from trax.fastmath import numpy as jnp
-import numpy as np
-
-import textwrap
-wrapper = textwrap.TextWrapper(width=70)
+from Tokenization.Tokenization import decode_and_skip_special_tokens, convert_tokens_to_ids, tokenize_text
 
 import time
 
@@ -20,22 +15,15 @@ def measure_time(func):
     return wrapper
 
 
-def tokenize(input, EOS=1, vocab_dir='model/vocab_dir/'):
-    inputs = next(trax.data.tokenize(iter([input]),
-                                     vocab_dir=vocab_dir,
-                                     vocab_file='summarize32k.subword.subwords'
-                                     ))
+def tokenize(input, EOS=50260):
+    tokens = tokenize_text(input)
+    inputs = convert_tokens_to_ids(tokens)
     return list(inputs) + [EOS]
 
-def detokenize(integers, vocab_dir='model/vocab_dir/'):
+def detokenize(integers):
     """List of ints to str"""
     
-    wrapper = textwrap.TextWrapper(width=70)
-    s = trax.data.detokenize(integers,
-                             vocab_dir=vocab_dir,
-                             vocab_file='summarize32k.subword.subwords')
-    
-    return wrapper.fill(s)
+    return decode_and_skip_special_tokens(integers)
 
 def create_tensor(t):
     """Create tensor from list of lists"""

@@ -22,9 +22,9 @@ def training_loop(TransformerLM, train_gen, eval_gen, output_dir = "./modelOutpu
         trax.supervised.training.Loop: Training loop.
     '''
     output_dir = os.path.expanduser(output_dir)  # trainer is an object
-    lr_schedule = trax.lr.warmup_and_rsqrt_decay(n_warmup_steps=1000, max_value=0.01)
+    lr_schedule = trax.lr.warmup_and_rsqrt_decay(n_warmup_steps=10, max_value=0.01)
 
-    train_task = training.TrainTask( 
+    train_task = training.TrainTask(
       labeled_data=train_gen, # The training generator
       loss_layer=tl.CrossEntropyLoss(), # Loss function 
       optimizer=trax.optimizers.Adam(0.01), # Optimizer (Don't forget to set LR to 0.01)
@@ -46,7 +46,7 @@ def training_loop(TransformerLM, train_gen, eval_gen, output_dir = "./modelOutpu
 
 # Get Preprocessed Data
 data_path = 'model/data/kaggle_valid_cleansed.csv'
-train_batch_stream, eval_batch_stream = get_data_streams(data_path)
+train_batch_stream, eval_batch_stream = get_data_streams()
 
 # Training
 try:
@@ -55,4 +55,4 @@ except OSError as e:
   pass
 
 loop = training_loop(TransformerLM, train_batch_stream, eval_batch_stream)
-loop.run(250)
+loop.run(200)

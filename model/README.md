@@ -1,5 +1,9 @@
-# Model
+# Process Overview
+![Image of structure](./overview.png)
+
+## Model
 ![Image of transformer](./transformer-model.png)
+
 
 ## Data Team
 #### Members
@@ -28,3 +32,4 @@
   - Greedy Decoding
   - Beam Search Decoding
 - Create the model from the subcomponents
+
