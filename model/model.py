@@ -62,7 +62,7 @@ def DecoderBlock(model_depth, ff_depth, ff_activation, nr_heads, dropout, mode):
 
 # Implement TransformerLM
 def TransformerLM(
-  vocab_size=33300,
+  vocab_size=50260,
   model_depth=512,
   ff_depth=2048,
   ff_activation=tl.Relu,

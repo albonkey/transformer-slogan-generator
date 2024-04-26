@@ -55,4 +55,4 @@ except OSError as e:
   pass
 
 loop = training_loop(TransformerLM, train_batch_stream, eval_batch_stream)
-loop.run(200)
+loop.run(240)

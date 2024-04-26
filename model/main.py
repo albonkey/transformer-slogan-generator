@@ -22,4 +22,4 @@ model = TransformerLM(model_depth=512,
 model.init_from_file('modelOutput/model.pkl.gz', weights_only=True)
 
 print("The summarization of the file you provided is:")
-print(decode_greedy(text, model))
+print(decode_sampling(text, model))
