@@ -4,7 +4,7 @@ import utils from '../api/utils';
 import FormInput from '../components/FormInput'
 import { PrimaryButton } from '../components/Button';
 import { auth } from '../database/database';
-import signInWithEmailAndPassword from 'firebase/compat';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginScreen = ({ navigation }) => {
     const [emailError, setEmailError] = React.useState('')
@@ -12,23 +12,20 @@ const LoginScreen = ({ navigation }) => {
     const [password, setPassword] = React.useState('')
     const [showPass, setShowPass] = React.useState(false)
 
-
+    const auth = getAuth();
 
     function isEnableSignIn() { return email != '' && password != '' && emailError == '' }
 
-  const handleLogin = async () => {
-    try {
-      const userCredentials = await signInWithEmailAndPassword(auth, email, password);
-      const authUser = userCredentials.user;
-      
-      navigation.navigate('Home')
- 
-    }  catch (error) {
-      console.error("Error during login: ", error);
-      alert(error.message);
-    }
-
-  }
+    const handleLogin = async () => {
+      try {
+          const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+          const authUser = userCredentials.user;
+          navigation.navigate('Home');
+      } catch (error) {
+          console.error("Error during login: ", error);
+          alert(error.message);
+      }
+  };
   return (
     <SafeAreaView style={styles.container}>
 

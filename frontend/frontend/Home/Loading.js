@@ -3,14 +3,33 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 
 const LoadingScreen = ({ navigation, route }) => {
+  const { companyName, description } = route.params;
+
   useEffect(() => {
-    const { companyName, description, motto } = route.params;
+    const fetchSlogan = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/generate-slogan', {  // Use appropriate IP address
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ companyName, description }),
+        });
+        const json = await response.json();
+        if (response.ok) {
+          navigation.navigate('SloganDisplayScreen', { companyName, description, slogan: json.slogan });
+        } else {
+          console.log('Response Status:', response.status);
+          throw new Error(json.error || 'Failed to generate slogan');
+        }
+      } catch (error) {
+        console.error('Fetch Error:', error);
+        alert('Failed to generate slogan: ' + error.message);
+      }
+    };
     
-    // Simulate generating a slogan (you would call your API here)
-    setTimeout(() => {
-      // Navigate to the slogan display screen after 'loading'
-      navigation.navigate('SloganDisplayScreen', { companyName, motto, slogan: "Your Future Starts Here" }); // Example slogan
-    }, 2000); // Simulate a 2-second loading time
+
+    fetchSlogan();
   }, []);
 
   return (

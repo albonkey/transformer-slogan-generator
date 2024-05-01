@@ -45,7 +45,7 @@ def training_loop(TransformerLM, train_gen, eval_gen, output_dir = "./modelOutpu
     return loop
 
 # Get Preprocessed Data
-data_path = 'model/data/kaggle_valid_cleansed.csv'
+data_path = 'data/kaggle_valid_cleansed.csv'
 train_batch_stream, eval_batch_stream = get_data_streams()
 
 # Training

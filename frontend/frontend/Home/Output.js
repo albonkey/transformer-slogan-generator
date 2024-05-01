@@ -1,16 +1,24 @@
 // SloganDisplayScreen.js
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-const SloganDisplayScreen = ({ route }) => {
-  const { companyName, motto, slogan } = route.params;
+const SloganDisplayScreen = ({ route, navigation }) => {
+  const { companyName, slogan } = route.params;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{companyName}</Text>
-      <Text style={styles.subtitle}>{motto}</Text>
-      <Text style={styles.slogan}>{slogan}</Text>
-    </View>
+    <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.container}>
+      <View style={styles.box}>
+        <Text style={styles.title}>Company Name:</Text>
+        <Text style={styles.value}>{companyName}</Text>
+        <Text style={styles.title}>Slogan:</Text>
+        <Text style={styles.value}>{slogan}</Text>
+      </View>
+      
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
+        <Text style={styles.buttonText}>Generate New Slogan</Text>
+      </TouchableOpacity>
+      </LinearGradient>
   );
 };
 
@@ -21,19 +29,42 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  box: {
+    width: '90%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  subtitle: {
+  title: {
     fontSize: 18,
-    fontStyle: 'italic',
+    color: '#333',
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  value: {
+    fontSize: 16,
+    color: '#555',
     marginBottom: 20,
   },
-  slogan: {
-    fontSize: 20,
-    textAlign: 'center',
+  button: {
+    backgroundColor: '#e63946',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
