@@ -1,13 +1,17 @@
-// SloganDisplayScreen.js
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const SloganDisplayScreen = ({ route, navigation }) => {
   const { companyName, slogan } = route.params;
 
   return (
-    <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.container}>
+    <LinearGradient
+      colors={['#4c669f', '#3b5998', '#192f6a']}
+      style={styles.container}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    >
       <View style={styles.box}>
         <Text style={styles.title}>Company Name:</Text>
         <Text style={styles.value}>{companyName}</Text>
@@ -15,10 +19,10 @@ const SloganDisplayScreen = ({ route, navigation }) => {
         <Text style={styles.value}>{slogan}</Text>
       </View>
       
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
         <Text style={styles.buttonText}>Generate New Slogan</Text>
       </TouchableOpacity>
-      </LinearGradient>
+    </LinearGradient>
   );
 };
 
