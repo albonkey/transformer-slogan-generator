@@ -15,12 +15,18 @@ const HistoryScreen = () => {
         return;
       }
 
-      const doc = await db.collection('slogans').doc(user.email).get();
-      if (doc.exists) {
-        setSlogans([doc.data()]);  // Assuming multiple slogans per user stored in one document
-      } else {
-        console.log("No such document!");
-      }
+      const snapshot = await db.collection(user.email).get();
+      console.log(snapshot);
+
+if (!snapshot.empty) {
+  const slogansData = [];
+  snapshot.forEach((doc) => {
+    slogansData.push(doc.data());
+  });
+  setSlogans(slogansData);
+} else {
+  console.log("No documents found!");
+}
     };
 
     fetchSlogans();

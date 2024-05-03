@@ -50,6 +50,9 @@ const HomeScreen = ({ navigation }) => {
             <TouchableOpacity style={styles.button} onPress={handleGenerateSlogan}>
               <Text style={styles.buttonText}>Generate Slogan</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Login')}>
+              <Text style={styles.buttonText}>Logout</Text>
+            </TouchableOpacity>
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

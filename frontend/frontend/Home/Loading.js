@@ -30,7 +30,7 @@ const LoadingScreen = ({ navigation, route }) => {
 
         if (response.ok) {
           // Save to Firestore with user's email
-          await db.collection('slogans').doc(user.email).set({
+          await db.collection(user.email).add({
             companyName,
             description,
             slogan: json.slogan,

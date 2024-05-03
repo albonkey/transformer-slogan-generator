@@ -32,7 +32,7 @@ const FormInput=( {
                 justifyContent: 'space-between'
             }}>
 
-                <Text style={{color: 'white',  fontSize:14, lineHeight: 22 }} >
+                <Text style={{color: 'gray',  fontSize:14, lineHeight: 22 }} >
                     {lable}
                 </Text>
                 <Text style={{color: 'red',  fontSize:14, lineHeight: 22 }} >
