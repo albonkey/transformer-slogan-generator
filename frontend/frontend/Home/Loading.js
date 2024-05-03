@@ -1,26 +1,43 @@
-// LoadingScreen.js
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore';
+import { db,auth } from '../database/database';
 
 const LoadingScreen = ({ navigation, route }) => {
   const { companyName, description } = route.params;
-  
+
   useEffect(() => {
     const fetchSlogan = async () => {
       try {
+        // Make sure user is authenticated
         
-        const response = await fetch('http://192.168.1.27:5000/generate-slogan', {  // Use appropriate IP address
+        
+        const user = auth.currentUser;
+        if (!user) {
+          Alert.alert("No User", "No user is currently signed in.");
+          navigation.navigate('Login');
+          return;
+        }
+
+        const response = await fetch('http://192.168.1.27:5000/generate-slogan', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          
-          body: JSON.stringify( {companyName, description} ),
-          
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ companyName, description }),
         });
-        console.log(response.body)
+        
         const json = await response.json();
+        console.log(db, auth);  // Check if these are undefined
+
         if (response.ok) {
+          // Save to Firestore with user's email
+          await db.collection(user.email).add({
+            companyName,
+            description,
+            slogan: json.slogan,
+            userEmail: user.email,  // Storing user's email with the slogan
+            
+          });
+          
           navigation.navigate('Output', { companyName, description, slogan: json.slogan });
         } else {
           console.log('Response Status:', response.status);
@@ -28,10 +45,9 @@ const LoadingScreen = ({ navigation, route }) => {
         }
       } catch (error) {
         console.error('Fetch Error:', error);
-        alert('Failed to generate slogan: ' + error.message);
+        Alert.alert('Error', 'Failed to generate slogan: ' + error.message);
       }
     };
-    
 
     fetchSlogan();
   }, []);
