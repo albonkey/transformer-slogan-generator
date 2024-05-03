@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { View, Text, TextInput, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity,ScrollView, Keyboard,KeyboardAvoidingView,Platform , TouchableWithoutFeedback  } from 'react-native';
 import utils from '../api/utils';
 import FormInput from '../components/FormInput'
 import { PrimaryButton } from '../components/Button';
@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
       try {
           const userCredentials = await signInWithEmailAndPassword(auth, email, password);
           const authUser = userCredentials.user;
-          navigation.navigate('Home');
+          navigation.navigate('Main');
       } catch (error) {
           console.error("Error during login: ", error);
           alert(error.message);
@@ -28,12 +28,17 @@ const LoginScreen = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-
-      
+      <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+            >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ScrollView>
       <View
           style={{
             alignItems: 'center',
-            margin:80,
+            margin:60,
             
             
           }}>
@@ -112,33 +117,41 @@ const LoginScreen = ({ navigation }) => {
             }
           />
             </View>
-        <View style={{ alignSelf: 'center',  }}>
+        <View style={{ alignSelf: 'center', marginTop:20 }}>
             <PrimaryButton
               btnContainer={{
-
                 backgroundColor: isEnableSignIn() ? 'orange' : 'rgba(227, 120, 75, 0.4)',
                 height: 55, width: 200,
                 borderRadius: 24,
-                
-
               }}
               title='Login'
-
               disabled={isEnableSignIn() ? false : true}
               //check with firebase
               onPress={handleLogin} 
-                
-              
+                             
             /></View>
-      <Button
-        title="Create an account"
-        onPress={() => navigation.navigate('SignUp')}
-      />
+                    <View style={{ alignSelf: 'center', marginTop:20 }}>
+            <PrimaryButton
+              btnContainer={{
+                backgroundColor: 'skyblue' ,
+                height: 55, width: 200,
+                borderRadius: 24,
+              }}
+              title='Create an account'
+              
+              //check with firebase
+              onPress={() => navigation.navigate('SignUp')} 
+                             
+            /></View>
+      <View style={{ alignSelf: 'center', marginTop:20 }}>
       <Button
         title="Forgot Password?"
         onPress={() => navigation.navigate('ForgotPassword')}
       />
-    
+      </View>
+    </ScrollView>
+      </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

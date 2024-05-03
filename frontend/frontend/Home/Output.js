@@ -19,7 +19,7 @@ const SloganDisplayScreen = ({ route, navigation }) => {
         <Text style={styles.value}>{slogan}</Text>
       </View>
       
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Main')}>
         <Text style={styles.buttonText}>Generate New Slogan</Text>
       </TouchableOpacity>
     </LinearGradient>
