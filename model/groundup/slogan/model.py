@@ -69,7 +69,7 @@ def TransformerLM(
   model_depth=4,
   ff_depth=16,
   ff_activation=tl.Relu,
-  nr_layers=1,
+  nr_layers=2,
   nr_heads=2,
   dropout=0.1,
   max_length=4096,
