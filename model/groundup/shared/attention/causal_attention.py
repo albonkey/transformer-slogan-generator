@@ -1,7 +1,7 @@
 from trax import layers as tl
 from trax.fastmath import numpy as jnp
 
-from attention.dot_product_attention import DotProductAttention
+from attention.dot_product_attention import dot_product_self_attention
 
 def CausalAttention(d_feature, n_heads, mode='train'):
     """Transformer-style multi-headed causal attention.
@@ -25,38 +25,18 @@ def CausalAttention(d_feature, n_heads, mode='train'):
         # Size of the x's batch dimension
         batch_size = x.shape[0]
         # Length of the sequence
-        # Should be size of x's first dimension without counting the batch dim
         seqlen = x.shape[1]
-        # Reshape x using jnp.reshape()
+
         # n_batch, seqlen, n_heads*d_head -> n_batch, seqlen, n_heads, d_head
         x = jnp.reshape(x, (batch_size, seqlen, n_heads, d_head))
-        # Transpose x using jnp.transpose()
+
         # n_batch, seqlen, n_heads, d_head -> n_batch, n_heads, seqlen, d_head
-        # Note that the values within the tuple are the indexes of the dimensions of x and you must rearrange them
         x = jnp.transpose(x, (0, 2, 1, 3))
-        # Reshape x using jnp.reshape()
+  
         # n_batch, n_heads, seqlen, d_head -> n_batch*n_heads, seqlen, d_head
         x = jnp.reshape(x, (-1, seqlen, d_head))
         
         return x
-    
-    def dot_product_self_attention(q, k, v):
-        """ Masked dot product self attention.
-        Args:
-            q (jax.interpreters.xla.DeviceArray): queries.
-            k (jax.interpreters.xla.DeviceArray): keys.
-            v (jax.interpreters.xla.DeviceArray): values.
-        Returns:
-            jax.interpreters.xla.DeviceArray: masked dot product self attention tensor.
-        """
-        mask_size = q.shape[1]
-
-        # Creates a matrix with ones below the diagonal and 0s above. It should have shape (1, mask_size, mask_size)
-        # Notice that 1's and 0's get casted to True/False by setting dtype to jnp.bool_
-        # Use jnp.tril() - Lower triangle of an array and jnp.ones()
-        mask = jnp.tril(jnp.ones((1, mask_size, mask_size), dtype=jnp.bool_), k=0)
-        
-        return DotProductAttention(q, k, v, mask)
 
     def compute_attention_output(x):
         """ Compute the attention output.
@@ -67,9 +47,8 @@ def CausalAttention(d_feature, n_heads, mode='train'):
         """
         
         # Length of the sequence
-        # Should be size of x's first dimension without counting the batch dim
         seqlen = x.shape[1]
-        # Reshape x using jnp.reshape() to shape (n_batch, n_heads, seqlen, d_head)
+        # Reshape to (n_batch, n_heads, seqlen, d_head)
         x = jnp.reshape(x, (-1, n_heads, seqlen, d_head))
         # Transpose x using jnp.transpose() to shape (n_batch, seqlen, n_heads, d_head)
         x = jnp.transpose(x, (0, 2, 1, 3))

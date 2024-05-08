@@ -4,6 +4,7 @@ from trax import layers as tl
 from trax.fastmath import numpy as jnp
 
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'shared'))
+
 from attention.causal_attention import CausalAttention
 
 # Implement Decoder Block
@@ -33,32 +34,21 @@ def DecoderBlock(model_depth, ff_depth, ff_activation, nr_heads, dropout, mode):
 
     # Create feed-forward block (list) with two dense layers with dropout and input normalized
     feed_forward = [
-        # Normalize layer inputs
         tl.LayerNorm(),
-        # Add first feed forward (dense) layer (don't forget to set the correct value for n_units)
         tl.Dense(ff_depth),
-        # Add activation function passed in as a parameter (you need to call it!)
-        ff_activation(),  # Generally ReLU
-        # Add dropout with rate and mode specified (i.e., don't use dropout during evaluation)
+        ff_activation(),
         tl.Dropout(rate=dropout, mode=mode),
-        # Add second feed forward layer (don't forget to set the correct value for n_units)
         tl.Dense(model_depth),
-        # Add dropout with rate and mode specified (i.e., don't use dropout during evaluation)
         tl.Dropout(rate=dropout, mode=mode)
     ]
 
-    # Add list of two Residual blocks: the attention with normalization and dropout and feed-forward blocks
     return [
         tl.Residual(
-            # Normalize layer input
             tl.LayerNorm(),
-            # Add causal attention block previously defined (without parentheses)
             causal_attention,
-            # Add dropout with rate and mode specified
             tl.Dropout(rate=dropout, mode=mode)
         ),
         tl.Residual(
-            # Add feed forward block (without parentheses)
             feed_forward
         ),
     ]
@@ -69,7 +59,7 @@ def TransformerLM(
   model_depth=4,
   ff_depth=16,
   ff_activation=tl.Relu,
-  nr_layers=2,
+  nr_layers=1,
   nr_heads=2,
   dropout=0.1,
   max_length=4096,
@@ -92,3 +82,5 @@ def TransformerLM(
     tl.Dense(vocab_size),
     tl.LogSoftmax()
   )
+
+print(TransformerLM())

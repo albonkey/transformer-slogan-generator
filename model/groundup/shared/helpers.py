@@ -14,7 +14,6 @@ def measure_time(func):
 def create_tensor(t):
     return jnp.array(t)
 
-
 def display_tensor(t, name):
     print(f'{name} shape: {t.shape}\n')
     print(f'{t}\n')

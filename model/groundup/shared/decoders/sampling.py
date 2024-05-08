@@ -1,8 +1,7 @@
 import numpy as np
 
 def decode_sampling(input_sentence, model, EOS, PAD, tokenize, detokenize, verbose=True):
-  """Decode function.
-
+  """
   Args:
       input_sentence (string): a sentence or article.
       model (trax.layers.combinators.Serial): Transformer model.
@@ -11,7 +10,6 @@ def decode_sampling(input_sentence, model, EOS, PAD, tokenize, detokenize, verbo
       string: summary of the input.
   """
   
-  # Use tokenize()
   cur_output_tokens = tokenize(input_sentence) + [PAD]    
   generated_output = [] 
   cur_output = 0 
@@ -34,8 +32,7 @@ def decode_sampling(input_sentence, model, EOS, PAD, tokenize, detokenize, verbo
   return detokenize(generated_output)
 
 def next_symbol_sampling(cur_output_tokens, model):
-  """Returns the next symbol for a given sentence.
-
+  """
   Args:
       cur_output_tokens (list): tokenized sentence with EOS and PAD tokens at the end.
       model (trax.layers.combinators.Serial): The transformer model.
@@ -43,6 +40,7 @@ def next_symbol_sampling(cur_output_tokens, model):
   Returns:
       int: tokenized symbol.
   """
+
   token_length = len(cur_output_tokens)
   padded_length = 2 ** int(np.ceil(np.log2(token_length + 1)))
 
@@ -55,7 +53,6 @@ def next_symbol_sampling(cur_output_tokens, model):
   # Convert log probabilities to probabilities using softmax
   probs = np.exp(log_probs) / np.sum(np.exp(log_probs))
   
-  # Sample the next symbol based on the probabilities
-  next_symbol = int(np.random.choice(len(probs), p=probs))
+  sample_next_symbol = int(np.random.choice(len(probs), p=probs))
   
-  return next_symbol
+  return sample_next_symbol

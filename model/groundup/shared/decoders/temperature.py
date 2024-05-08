@@ -1,4 +1,5 @@
 import numpy as np
+
 def softmax(logits, temperature=1.0):
     """Apply softmax with temperature to logits. Adjusts the temperature to ensure 
     a balance between randomness and determinism if set to zero."""

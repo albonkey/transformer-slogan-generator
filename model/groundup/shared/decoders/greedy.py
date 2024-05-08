@@ -1,8 +1,7 @@
 import numpy as np
 
 def decode_greedy(input_sentence, model, EOS, PAD, tokenize, detokenize, verbose=True):
-    """Decode function.
-
+    """
     Args:
         input_sentence (string): a sentence or article.
         model (trax.layers.combinators.Serial): Transformer model.
@@ -35,8 +34,7 @@ def decode_greedy(input_sentence, model, EOS, PAD, tokenize, detokenize, verbose
     return detokenize(generated_output)
 
 def next_symbol_greedy(cur_output_tokens, model):
-  """Returns the next symbol for a given sentence.
-
+  """
   Args:
       cur_output_tokens (list): tokenized sentence with EOS and PAD tokens at the end.
       model (trax.layers.combinators.Serial): The transformer model.

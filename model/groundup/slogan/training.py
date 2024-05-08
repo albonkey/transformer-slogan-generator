@@ -40,7 +40,9 @@ def training_loop(TransformerLM, train_gen, eval_gen, output_dir = 'groundup/slo
     loop = training.Loop(TransformerLM(mode='train'),
                          train_task,
                          eval_tasks=[eval_task],
-                         output_dir=output_dir)
+                         output_dir=output_dir,)
+    
+    #loop.load_checkpoint(directory='groundup/slogan/modelOutput', filename='model.pkl.gz')
     
     return loop
 
@@ -51,5 +53,8 @@ train_batch_stream, eval_batch_stream = get_data_streams()
 
 loop = training_loop(TransformerLM, train_batch_stream, eval_batch_stream)
 
-loop.load_checkpoint(directory='modelOutput', filename='model.pkl.gz')
-loop.run(200)
+loop.run(10)
+
+loop.load_checkpoint(directory='groundup/slogan/modelOutput/', filename='model.pkl.gz')
+
+loop.run(50)

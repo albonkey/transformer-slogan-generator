@@ -1,27 +1,43 @@
 import trax
-from trax import layers as tl
 from trax.fastmath import numpy as jnp
+import numpy as np
 
-def DotProductAttention(query, key, value, mask=None):
+def dot_product_attention(query, key, value, mask=None):
   assert query.shape[-1] == key.shape[-1] == value.shape[-1], "Embedding dimensions of q, k, v aren't all the same"
 
-  # Save depth/dimension of the query embedding for scaling down the dot product
-  depth = query.shape[-1]
+  # Q * K^T
+  dot_product = jnp.matmul(query, jnp.swapaxes(key, -1, -2))
 
-  # Calculate scaled query key dot product
-  dots = jnp.matmul(query, jnp.swapaxes(key, -1, -2)) / jnp.sqrt(depth)
+  # Scale dot_product (dot product / sqrt(dk)
+  depth = query.shape[-1]
+  dot_product_scaled = dot_product / jnp.sqrt(depth)
   
   if mask is not None:
-      dots = jnp.where(mask, dots, jnp.full_like(dots, -1e9))
+      dot_product_scaled = jnp.where(mask, dot_product_scaled, jnp.full_like(dot_product_scaled, -1e9))
   
   # Softmax formula implementation
-  # Note: softmax = None
-  logsumexp = trax.fastmath.logsumexp(dots, axis=-1, keepdims=True)
+  logsumexp = trax.fastmath.logsumexp(dot_product_scaled, axis=-1, keepdims=True)
 
   # Take exponential of dots minus logsumexp to get softmax
-  dots = jnp.exp(dots - logsumexp)
+  dot_with_softmax = jnp.exp(dot_product_scaled - logsumexp)
 
   # Multiply dots by value to get self-attention
-  attention = jnp.matmul(dots, value)
+  attention = jnp.matmul(dot_with_softmax, value)
   
   return attention
+
+def dot_product_self_attention(q, k, v):
+  """ Masked dot product self attention.
+  Args:
+      q (jax.interpreters.xla.DeviceArray): queries.
+      k (jax.interpreters.xla.DeviceArray): keys.
+      v (jax.interpreters.xla.DeviceArray): values.
+  Returns:
+      jax.interpreters.xla.DeviceArray: masked dot product self attention tensor.
+  """
+  mask_size = q.shape[1]
+
+  # Creates a matrix with ones below the diagonal and 0s above. It should have shape (1, mask_size, mask_size)
+  mask = jnp.tril(jnp.ones((1, mask_size, mask_size), dtype=jnp.bool_), k=0)
+  
+  return dot_product_attention(q, k, v, mask)
