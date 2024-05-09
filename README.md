@@ -1,6 +1,8 @@
 # Transformer Slogan Generator
 A repository for our NLP project that creates slogans based on a companies description.
 
+![Intro Image](./intro-image.png)
+
 ## Frontend
 
 #### Responsibility
