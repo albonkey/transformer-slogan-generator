@@ -2,7 +2,6 @@
 A repository for our NLP project that creates slogans based on a companies description.
 
 ## Frontend
-The frontend is developed with React Native
 
 #### Responsibility
 - Implement User Interface
