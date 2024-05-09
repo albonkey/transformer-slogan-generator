@@ -38,7 +38,7 @@ A repository for our NLP project that creates slogans based on a companies descr
 #### Responsibility
 - Implement Attention
   - Dot Product Attention
-  - Causal Attention
+  - Multi Head Attention
 - Implement Decoders
   - Greedy Decoding
   - Beam Search Decoding
