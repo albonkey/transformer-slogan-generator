@@ -1,5 +1,5 @@
-## Model
-![Image of transformer](./transformer-model.png)
+# Models
+![Image of transformer](./transformer-models.png)
 
 ## Process Overview
 ![Image of structure](./overview.png)
