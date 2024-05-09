@@ -58,13 +58,3 @@ def preprocess(stream):
     joint = np.array(list(company) + list(description) + [EOS, PAD] + list(slogan) + [EOS])
     mask = [0] * (len(list(company)) + len(list(description)) + 2) + [1] * (len(list(slogan)) + 1)
     yield joint, joint, np.array(mask)
-
-# Just used for visualizing, run this file to see
-def runOnce():
-  stream, _ = get_data_streams()
-
-  print("READY TO BE FED INTO MODEL:")
-  print(next(stream))
-  print("====================================")
-
-runOnce()

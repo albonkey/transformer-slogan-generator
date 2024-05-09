@@ -4,8 +4,7 @@ from trax.fastmath import numpy as jnp
 from attention.dot_product_attention import dot_product_self_attention
 
 def MaskedMultiHeadAttention(d_feature, n_heads, mode='train'):
-    """Transformer-style multi-headed causal attention.
-
+    """
     Args:
         d_feature (int):  dimensionality of feature embedding.
         n_heads (int): number of attention heads.
@@ -15,7 +14,7 @@ def MaskedMultiHeadAttention(d_feature, n_heads, mode='train'):
         trax.layers.combinators.Serial: Multi-headed self-attention model.
     """
     def compute_attention_heads(x):
-        """ Compute the attention heads.
+        """
         Args:
             x (jax.interpreters.xla.DeviceArray): tensor with shape (n_batch, seqlen, n_heads X d_head).
         Returns:
@@ -39,7 +38,7 @@ def MaskedMultiHeadAttention(d_feature, n_heads, mode='train'):
         return x
 
     def compute_attention_output(x):
-        """ Compute the attention output.
+        """
         Args:
             x (jax.interpreters.xla.DeviceArray): tensor with shape (n_batch X n_heads, seqlen, d_head).
         Returns:

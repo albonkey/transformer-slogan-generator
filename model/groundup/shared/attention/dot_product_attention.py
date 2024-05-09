@@ -1,6 +1,5 @@
 import trax
 from trax.fastmath import numpy as jnp
-import numpy as np
 
 def dot_product_attention(query, key, value, mask=None):
   assert query.shape[-1] == key.shape[-1] == value.shape[-1], "Embedding dimensions of q, k, v aren't all the same"
@@ -37,7 +36,7 @@ def dot_product_self_attention(q, k, v):
   """
   mask_size = q.shape[1]
 
-  # Creates a matrix with ones below the diagonal and 0s above. It should have shape (1, mask_size, mask_size)
+  # Creates a matrix with ones below the diagonal and 0s above.
   mask = jnp.tril(jnp.ones((1, mask_size, mask_size), dtype=jnp.bool_), k=0)
   
   return dot_product_attention(q, k, v, mask)

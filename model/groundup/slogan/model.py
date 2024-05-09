@@ -76,5 +76,3 @@ def TransformerLM(
     tl.Dense(vocab_size),
     tl.LogSoftmax()
   )
-
-print(TransformerLM())

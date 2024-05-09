@@ -10,7 +10,7 @@ def tokenize(input, EOS=1, vocab_dir='groundup/summarizer/vocab_dir/'):
   return list(inputs) + [EOS]
 
 def detokenize(integers, vocab_dir='groundup/summarizer/vocab_dir/'):
-  """List of ints to str"""
+  '''List of ints to str'''
   
   wrapper = textwrap.TextWrapper(width=70)
   s = trax.data.detokenize(integers,

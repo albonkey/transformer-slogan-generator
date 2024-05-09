@@ -6,7 +6,7 @@ from preprocess import get_data_streams
 from model import TransformerLM
 
 def training_loop(TransformerLM, train_gen, eval_gen, output_dir = 'groundup/slogan/modelOutput'):
-    '''
+    """
     Input:
         TransformerLM (trax.layers.combinators.Serial): The model you are building.
         train_gen (generator): Training stream of data.
@@ -15,7 +15,8 @@ def training_loop(TransformerLM, train_gen, eval_gen, output_dir = 'groundup/slo
         
     Returns:
         trax.supervised.training.Loop: Training loop.
-    '''
+    """
+    
     output_dir = os.path.expanduser(output_dir)
     lr_schedule = trax.lr.warmup_and_rsqrt_decay(n_warmup_steps=100, max_value=0.01)
 
