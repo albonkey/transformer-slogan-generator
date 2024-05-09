@@ -1,6 +1,7 @@
 import sys
 import os
 from model import TransformerLM
+from helpers import tokenize, detokenize
 
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'shared'))
 from decoders.greedy import decode_greedy
@@ -17,7 +18,7 @@ with open(file_name, 'r') as file:
 
 model = TransformerLM(mode='eval')
 
-model.init_from_file('modelOutput/model.pkl.gz', weights_only=True)
+model.init_from_file('groundup/slogan/modelOutput/model.pkl.gz', weights_only=True)
 
 print("The slogan of the file you provided is:")
-print(decode_sampling(text, model))
+print(decode_sampling(text, model, EOS=50260, PAD=50257, tokenize=tokenize, detokenize=detokenize))

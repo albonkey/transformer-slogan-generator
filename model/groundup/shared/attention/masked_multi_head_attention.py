@@ -3,7 +3,7 @@ from trax.fastmath import numpy as jnp
 
 from attention.dot_product_attention import dot_product_self_attention
 
-def CausalAttention(d_feature, n_heads, mode='train'):
+def MaskedMultiHeadAttention(d_feature, n_heads, mode='train'):
     """Transformer-style multi-headed causal attention.
 
     Args:

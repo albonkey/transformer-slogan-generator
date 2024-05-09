@@ -50,7 +50,6 @@ def next_symbol_sampling(cur_output_tokens, model):
   output, _ = model((padded_with_batch, padded_with_batch))
   log_probs = output[0, token_length, :]
   
-  # Convert log probabilities to probabilities using softmax
   probs = np.exp(log_probs) / np.sum(np.exp(log_probs))
   
   sample_next_symbol = int(np.random.choice(len(probs), p=probs))

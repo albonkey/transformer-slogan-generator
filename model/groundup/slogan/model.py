@@ -1,13 +1,10 @@
 import sys
 import os
 from trax import layers as tl
-from trax.fastmath import numpy as jnp
 
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'shared'))
+from attention.masked_multi_head_attention import MaskedMultiHeadAttention
 
-from attention.causal_attention import CausalAttention
-
-# Implement Decoder Block
 def DecoderBlock(model_depth, ff_depth, ff_activation, nr_heads, dropout, mode):
     """Returns a list of layers that implements a Transformer decoder block.
 
@@ -25,14 +22,12 @@ def DecoderBlock(model_depth, ff_depth, ff_activation, nr_heads, dropout, mode):
         list: list of trax.layers.combinators.Serial that maps an activation tensor to an activation tensor.
     """
 
-    # Create masked multi-head attention block using CausalAttention function
-    causal_attention = CausalAttention(
+    masked_multi_head_attention = MaskedMultiHeadAttention(
         model_depth,
         n_heads=nr_heads,
         mode=mode
     )
 
-    # Create feed-forward block (list) with two dense layers with dropout and input normalized
     feed_forward = [
         tl.LayerNorm(),
         tl.Dense(ff_depth),
@@ -45,7 +40,7 @@ def DecoderBlock(model_depth, ff_depth, ff_activation, nr_heads, dropout, mode):
     return [
         tl.Residual(
             tl.LayerNorm(),
-            causal_attention,
+            masked_multi_head_attention,
             tl.Dropout(rate=dropout, mode=mode)
         ),
         tl.Residual(
@@ -53,7 +48,6 @@ def DecoderBlock(model_depth, ff_depth, ff_activation, nr_heads, dropout, mode):
         ),
     ]
 
-# Implement TransformerLM
 def TransformerLM(
   vocab_size=50260,
   model_depth=4,

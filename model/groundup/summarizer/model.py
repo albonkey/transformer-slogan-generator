@@ -3,9 +3,8 @@ import os
 from trax import layers as tl
 
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'shared'))
-from attention.causal_attention import CausalAttention
+from attention.masked_multi_head_attention import MaskedMultiHeadAttention
 
-# Implement Decoder Block
 def DecoderBlock(model_depth, ff_depth, ff_activation, nr_heads, dropout, mode):
     """Returns a list of layers that implements a Transformer decoder block.
 
@@ -23,46 +22,32 @@ def DecoderBlock(model_depth, ff_depth, ff_activation, nr_heads, dropout, mode):
         list: list of trax.layers.combinators.Serial that maps an activation tensor to an activation tensor.
     """
 
-    # Create masked multi-head attention block using CausalAttention function
-    causal_attention = CausalAttention(
+    masked_multi_head_attention = MaskedMultiHeadAttention(
         model_depth,
         n_heads=nr_heads,
         mode=mode
     )
 
-    # Create feed-forward block (list) with two dense layers with dropout and input normalized
     feed_forward = [
-        # Normalize layer inputs
         tl.LayerNorm(),
-        # Add first feed forward (dense) layer (don't forget to set the correct value for n_units)
         tl.Dense(ff_depth),
-        # Add activation function passed in as a parameter (you need to call it!)
-        ff_activation(),  # Generally ReLU
-        # Add dropout with rate and mode specified (i.e., don't use dropout during evaluation)
+        ff_activation(),
         tl.Dropout(rate=dropout, mode=mode),
-        # Add second feed forward layer (don't forget to set the correct value for n_units)
         tl.Dense(model_depth),
-        # Add dropout with rate and mode specified (i.e., don't use dropout during evaluation)
         tl.Dropout(rate=dropout, mode=mode)
     ]
 
-    # Add list of two Residual blocks: the attention with normalization and dropout and feed-forward blocks
     return [
         tl.Residual(
-            # Normalize layer input
             tl.LayerNorm(),
-            # Add causal attention block previously defined (without parentheses)
-            causal_attention,
-            # Add dropout with rate and mode specified
+            masked_multi_head_attention,
             tl.Dropout(rate=dropout, mode=mode)
         ),
         tl.Residual(
-            # Add feed forward block (without parentheses)
             feed_forward
         ),
     ]
 
-# Implement TransformerLM
 def TransformerLM(
   vocab_size=33300,
   model_depth=256,

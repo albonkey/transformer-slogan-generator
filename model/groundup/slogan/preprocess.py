@@ -21,7 +21,6 @@ def get_data_streams():
   boundaries =  [128, 256,  512, 1024]
   batch_sizes = [16,    8,    4,    2, 1]
 
-  # Create the streams.
   train_batch_stream = trax.data.BucketByLength(
       boundaries, batch_sizes)(train_stream)
   

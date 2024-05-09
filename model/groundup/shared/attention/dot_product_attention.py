@@ -27,7 +27,7 @@ def dot_product_attention(query, key, value, mask=None):
   return attention
 
 def dot_product_self_attention(q, k, v):
-  """ Masked dot product self attention.
+  """ Dot product self attention.
   Args:
       q (jax.interpreters.xla.DeviceArray): queries.
       k (jax.interpreters.xla.DeviceArray): keys.
