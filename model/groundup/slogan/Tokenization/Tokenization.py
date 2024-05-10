@@ -29,7 +29,7 @@ csv_file_path = 'groundup/slogan/data/kaggle_valid_cleansed.csv'
 data = pd.read_csv(csv_file_path)
 
 # Split the data into training and testing sets
-train_data, test_data = train_test_split(data, test_size=0.2, random_state=42)
+train_data, test_data = train_test_split(data, test_size=0.10, random_state=42)
 
 def tokenize_text(text):
     """Tokenize a text."""

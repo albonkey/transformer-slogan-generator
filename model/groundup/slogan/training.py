@@ -48,4 +48,4 @@ train_batch_stream, eval_batch_stream = get_data_streams()
 
 # Training
 loop = training_loop(TransformerLM, train_batch_stream, eval_batch_stream)
-loop.run(100)
+loop.run(350)

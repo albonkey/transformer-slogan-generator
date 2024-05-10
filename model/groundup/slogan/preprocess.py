@@ -5,7 +5,7 @@ import trax
 import pandas as pd
 
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'shared'))
-from Tokenization.Tokenization import convert_tokens_to_ids
+from tokenization.tokenization import convert_tokens_to_ids
 
 def get_data_streams():
   train_gen = get_dataset_generator('groundup/slogan/data/train_data_tokens.csv')
