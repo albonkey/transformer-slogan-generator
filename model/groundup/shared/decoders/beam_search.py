@@ -45,7 +45,7 @@ def decode_beam_search(input_sentence, model, beam_width, tokenize, detokenize, 
 
   return detokenize(generated_outputs[0])
 
-def next_symbols_beam_search(current_tokens, model, beam_width):
+def next_symbols_beam_search(cur_output_tokens, model, beam_width):
   """Beam search decoding function for the next symbol.
 
   Args:
@@ -56,9 +56,9 @@ def next_symbols_beam_search(current_tokens, model, beam_width):
   Returns:
       list: Candidate symbols.
   """
-  token_length = len(current_tokens)
+  token_length = len(cur_output_tokens)
   padded_length = 2 ** int(np.ceil(np.log2(token_length + 1)))
-  padded = current_tokens + [0] * (padded_length - token_length)
+  padded = cur_output_tokens + [0] * (padded_length - token_length)
   padded_with_batch = np.array(padded)[None, :]
 
   output, _ = model((padded_with_batch, padded_with_batch))

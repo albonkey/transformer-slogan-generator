@@ -3,11 +3,15 @@ import numpy as np
 def decode_sampling(input_sentence, model, EOS, PAD, tokenize, detokenize, verbose=True):
   """
   Args:
-      input_sentence (string): a sentence or article.
-      model (trax.layers.combinators.Serial): Transformer model.
+    input_sentence (string): a sentence or article.
+    model (trax.layers.combinators.Serial): Transformer model.
+    EOS (int): End-of-sentence token.
+    PAD (int): Padding token.
+    tokenize (function): Tokenization function.
+    detokenize (function): Detokenization function.
 
   Returns:
-      string: summary of the input.
+    string: summary of the input.
   """
   
   cur_output_tokens = tokenize(input_sentence) + [PAD]    

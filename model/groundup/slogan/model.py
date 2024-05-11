@@ -11,12 +11,12 @@ def DecoderBlock(model_depth, ff_depth, ff_activation, nr_heads, dropout, mode):
     The input is an activation tensor.
 
     Args:
-        d_model (int):  depth of embedding.
-        d_ff (int): depth of feed-forward layer.
-        n_heads (int): number of attention heads.
+        model_depth (int):  depth of embedding.
+        ff_depth (int): depth of feed-forward layer.
+        ff_activation (function): the non-linearity in feed-forward layer.
+        nr_heads (int): number of attention heads.
         dropout (float): dropout rate (how much to drop out).
         mode (str): 'train' or 'eval'.
-        ff_activation (function): the non-linearity in feed-forward layer.
 
     Returns:
         list: list of trax.layers.combinators.Serial that maps an activation tensor to an activation tensor.
@@ -53,7 +53,7 @@ def TransformerLM(
   model_depth=4,
   ff_depth=16,
   ff_activation=tl.Relu,
-  nr_layers=1,
+  nr_layers=2,
   nr_heads=2,
   dropout=0.1,
   max_length=4096,

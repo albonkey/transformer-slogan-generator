@@ -5,6 +5,10 @@ def decode_greedy(input_sentence, model, EOS, PAD, tokenize, detokenize, verbose
     Args:
         input_sentence (string): a sentence or article.
         model (trax.layers.combinators.Serial): Transformer model.
+        EOS (int): End-of-sentence token.
+        PAD (int): Padding token.
+        tokenize (function): Tokenization function.
+        detokenize (function): Detokenization function.
 
     Returns:
         string: summary of the input.
